@@ -1,0 +1,58 @@
+[
+  {
+    "category": "Food",
+    "data":[
+      {"date": "01 Jun", "amount": 500},
+      {"date": "05 Jun", "amount": 700},
+      {"date": "10 Jun", "amount": 800},
+      {"date": "15 Jun", "amount": 900},
+      {"date": "20 Jun", "amount": 1000},
+      {"date": "21 Jun", "amount": 900}
+    ],
+    "color": "#FF5733"
+  },
+  {
+    "category": "Rent",
+    "data":[
+      {"date": "01 Jun", "amount": 200},
+      {"date": "05 Jun", "amount": 500},
+      {"date": "10 Jun", "amount": 800},
+      {"date": "15 Jun", "amount": 900},
+      {"date": "20 Jun", "amount": 600}
+    ],
+    "color": "#AA3357"
+  },
+  {
+    "category": "Trans",
+    "data":[
+      {"date": "01 Jun", "amount": 100},
+      {"date": "05 Jun", "amount": 2000},
+      {"date": "10 Jun", "amount": 400},
+      {"date": "15 Jun", "amount": 50},
+      {"date": "20 Jun", "amount": 20}
+    ],
+    "color": "#3357FF"
+  },
+  {
+    "category": "Util",
+    "data":[
+      {"date": "01 Jun", "amount": 100},
+      {"date": "05 Jun", "amount": 500},
+      {"date": "10 Jun", "amount": 200},
+      {"date": "15 Jun", "amount": 10},
+      {"date": "20 Jun", "amount": 50}
+    ],
+    "color": "#A133FF"
+  },
+  {
+    "category": "Enter",
+    "data":[
+      {"date": "01 Jun", "amount": 100},
+      {"date": "05 Jun", "amount": 1500},
+      {"date": "10 Jun", "amount": 200},
+      {"date": "15 Jun", "amount": 400},
+      {"date": "20 Jun", "amount": 60}
+    ],
+    "color": "#33FFA8"
+  }
+]
