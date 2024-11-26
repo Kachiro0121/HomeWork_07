@@ -5,6 +5,9 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Path
+import android.os.Bundle
+import android.os.Parcel
+import android.os.Parcelable
 import android.util.AttributeSet
 import android.view.View
 import kotlinx.coroutines.CoroutineScope
@@ -23,6 +26,9 @@ class CategoryDetailGraphView @JvmOverloads constructor(
 
 
     companion object{
+        private const val KEY_SUPER_STATE = "KEY_SUPER_STATE"
+        private const val KEY_DATA = "KEY_DATA"
+
         private const val KEY_DATA_CATEGORY = "data"
         private const val KEY_CATEGORY = "category"
         private const val KEY_AMOUNT = "amount"
@@ -39,12 +45,58 @@ class CategoryDetailGraphView @JvmOverloads constructor(
         var category: String = "",
         var data: List<DataPoint> = listOf(),
         var color: Int = Color.BLACK
-    )
+    ) : Parcelable {
+        constructor(parcel: Parcel) : this(
+            parcel.readString() ?: "",
+            parcel.createTypedArrayList(DataPoint) ?: emptyList(),
+            parcel.readInt()
+        )
+
+        override fun writeToParcel(parcel: Parcel, flags: Int) {
+            parcel.writeString(category)
+            parcel.writeTypedList(data)
+            parcel.writeInt(color)
+        }
+
+        override fun describeContents(): Int = 0
+
+        companion object CREATOR : Parcelable.Creator<CategoryGraph> {
+            override fun createFromParcel(parcel: Parcel): CategoryGraph {
+                return CategoryGraph(parcel)
+            }
+
+            override fun newArray(size: Int): Array<CategoryGraph?> {
+                return arrayOfNulls(size)
+            }
+        }
+    }
 
     data class DataPoint(
         var date: String = "",
         var amount: Float = 0f
-    )
+    ) : Parcelable {
+        constructor(parcel: Parcel) : this(
+            parcel.readString() ?: "",
+            parcel.readFloat()
+        )
+
+        override fun writeToParcel(parcel: Parcel, flags: Int) {
+            parcel.writeString(date)
+            parcel.writeFloat(amount)
+        }
+
+        override fun describeContents(): Int = 0
+
+        companion object CREATOR : Parcelable.Creator<DataPoint> {
+            override fun createFromParcel(parcel: Parcel): DataPoint {
+                return DataPoint(parcel)
+            }
+
+            override fun newArray(size: Int): Array<DataPoint?> {
+                return arrayOfNulls(size)
+            }
+        }
+    }
 
     private val paintGrid = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         color = Color.LTGRAY
@@ -197,5 +249,26 @@ class CategoryDetailGraphView @JvmOverloads constructor(
             )
         }
     }
+
+
+    override fun onSaveInstanceState(): Parcelable {
+        val bundle = Bundle()
+        bundle.putParcelable(KEY_SUPER_STATE, super.onSaveInstanceState())
+        bundle.putParcelableArrayList(KEY_DATA, ArrayList(data))
+        return bundle
+    }
+
+    override fun onRestoreInstanceState(state: Parcelable?) {
+        if (state is Bundle) {
+            val savedData = state.getParcelableArrayList<CategoryGraph>(KEY_DATA)
+            if (savedData != null) {
+                data = savedData
+            }
+            super.onRestoreInstanceState(state.getParcelable(KEY_SUPER_STATE))
+        } else {
+            super.onRestoreInstanceState(state)
+        }
+    }
+
 
 }
