@@ -32,6 +32,7 @@ class PieChartView @JvmOverloads constructor(
     companion object{
         private const val KEY_SUPER_STATE = "KEY_SUPER_STATE"
         private const val KEY_DATA = "KEY_DATA"
+        private const val KEY_SELECT = "KEY_SELECT"
 
         private const val KEY_DATA_CATEGORY = "data"
         private const val KEY_CATEGORY = "category"
@@ -180,6 +181,7 @@ class PieChartView @JvmOverloads constructor(
         val bundle = Bundle()
         bundle.putParcelable(KEY_SUPER_STATE, super.onSaveInstanceState())
         bundle.putParcelableArrayList(KEY_DATA, ArrayList(data))
+        bundle.putString(KEY_SELECT, selectedCategoryIndex?.toString())
         return bundle
     }
 
@@ -188,7 +190,13 @@ class PieChartView @JvmOverloads constructor(
             val savedData = state.getParcelableArrayList<Category>(KEY_DATA)
             if (savedData != null) {
                 data = savedData
+                selectedCategoryIndex = state.getString(KEY_SELECT)?.toIntOrNull()
                 updateAngles(data, data.sumOf { it.amount.toDouble() }.toFloat())
+                selectedCategoryIndex?.let {
+                    val category = savedData[it]
+                    onSectorClickListener?.invoke(category)
+                    animateSelection(it)
+                }
             }
             super.onRestoreInstanceState(state.getParcelable(KEY_SUPER_STATE))
         } else {
